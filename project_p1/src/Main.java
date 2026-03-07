@@ -1,5 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World");
+        Graph g = new Graph();
+        g.parseGraph("input.dot");
+        System.out.println(g);
+        g.outputGraph("output.txt");
     }
 }

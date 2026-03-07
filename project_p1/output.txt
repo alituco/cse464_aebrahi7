@@ -1,0 +1,5 @@
+nodes: 4 nodes: [a, b, c, d] edges: 3
+edges:
+a -> b
+b -> c
+c -> d
