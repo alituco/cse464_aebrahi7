@@ -2,16 +2,15 @@ package main.java;
 
 public class Main {
     public static void main(String[] args) {
-        Graph g = new Graph();
+        Graph graph = new Graph();
 
-        g.parseGraph("input.dot");
+        graph.addEdge("y", "z");
 
-        g.addEdge("d","e");
+        graph.outputDOTGraph("yz_test.dot");
+        graph.outputGraphics("graph.png", "png");
 
-        g.outputDOTGraph("graph.dot");
-        g.outputGraphics("graph.png","png");
-
-        System.out.println(g);
-
+        System.out.println("files created.");
     }
+
+
 }
