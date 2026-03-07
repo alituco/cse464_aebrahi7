@@ -58,4 +58,21 @@ public class Graph {
             System.out.println("error writing");
         }
     }
+
+    public void addNode(String label) {
+        if (nodes.contains(label)) {
+            System.out.println("can't create the same node again: ");
+        } else {
+            nodes.add(label);
+        }
+
+    }
+
+    public void addNodes(String[] labels) {
+
+        for (int i = 0; i < labels.length; i++) {
+            addNode(labels[i]);
+        }
+
+    }
 }
