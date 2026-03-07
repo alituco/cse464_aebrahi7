@@ -68,11 +68,24 @@ public class Graph {
 
     }
 
-    public void addNodes(String[] labels) {
+    public void addNodes(String[] label) {
 
-        for (int i = 0; i < labels.length; i++) {
-            addNode(labels[i]);
+        for (int i = 0; i < label.length; i++) {
+            addNode(label[i]);
         }
 
+    }
+
+    public void addEdge(String srcLabel, String dstLabel) {
+
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).from.equals(srcLabel) && edges.get(i).to.equals(dstLabel)) {
+                return;
+            }
+        }
+        nodes.add(srcLabel);
+        nodes.add(dstLabel);
+
+        edges.add(new GraphEdge(srcLabel, dstLabel));
     }
 }
