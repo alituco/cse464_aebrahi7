@@ -1,3 +1,5 @@
+package main.java;
+
 import java.util.ArrayList;
 
 import java.util.HashSet;
@@ -9,8 +11,8 @@ import java.io.FileWriter;
 
 public class Graph {
 
-    HashSet<String> nodes = new HashSet<String>();
-    ArrayList<GraphEdge> edges = new ArrayList<GraphEdge>();
+    public HashSet<String> nodes = new HashSet<String>();
+    public ArrayList<GraphEdge> edges = new ArrayList<GraphEdge>();
 
     public void parseGraph(String filepath) {
         try {

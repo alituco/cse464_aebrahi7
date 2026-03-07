@@ -1,3 +1,6 @@
+package test.java;
+
+import main.java.Graph;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 
