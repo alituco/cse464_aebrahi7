@@ -3,12 +3,11 @@ public class Main {
         Graph g = new Graph();
 
         g.parseGraph("input.dot");
-        g.addNode("e");
 
-        String[] newNodes = {"f", "g", "a"};
-        g.addNodes(newNodes);
-        g.addEdge("d", "e");
-        g.addEdge("a", "b");
+        g.addEdge("d","e");
+
+        g.outputDOTGraph("graph.dot");
+        g.outputGraphics("graph.png","png");
 
         System.out.println(g);
 

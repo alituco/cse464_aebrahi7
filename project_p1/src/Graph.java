@@ -88,4 +88,40 @@ public class Graph {
 
         edges.add(new GraphEdge(srcLabel, dstLabel));
     }
+
+    public void outputDOTGraph(String path) {
+
+        try {
+            FileWriter w = new FileWriter(path);
+
+            w.write("digraph G {\n");
+
+            for (int i = 0; i < edges.size(); i++) {
+                w.write(edges.get(i) + ";\n");
+            }
+
+            w.write("}\n");
+
+            w.close();
+
+        } catch (Exception e) {
+            System.out.println("dot file error");
+        }
+    }
+
+    public void outputGraphics(String path, String format) {
+
+        try {
+            outputDOTGraph("res.dot");
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    "dot", "-T" + format, "res.dot", "-o", path
+            );
+
+            processBuilder.start().waitFor();
+
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+    }
+
 }
