@@ -1,13 +1,14 @@
 package main.java;
 
 import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 
 public class Graph {
@@ -165,8 +166,8 @@ public class Graph {
         }
     }
 
-    public Path GraphSearch(Node src, Node dst) {
-
+    public Path GraphSearch(Node src, Node dst, Algorithm algo) {
+      
         if (src == null || dst == null) {
             return null;
         }
@@ -175,14 +176,27 @@ public class Graph {
             return null;
         }
 
-        LinkedList<String> queue = new LinkedList<String>();
+        LinkedList<String> list = new LinkedList<String>();
+        HashSet<String> visited = new HashSet<String>();
         HashMap<String, String> parent = new HashMap<String, String>();
 
-        queue.add(src.label);
+        list.add(src.label);
         parent.put(src.label, null);
 
-        while (!queue.isEmpty()) {
-            String current = queue.remove();
+        while (!list.isEmpty()) {
+            String current;
+
+            if (algo == Algorithm.DFS) {
+                current = list.removeLast();
+            } else {
+                current = list.removeFirst();
+            }
+
+            if (visited.contains(current)) {
+                continue;
+            }
+
+            visited.add(current);
 
             if (current.equals(dst.label)) {
                 ArrayList<Node> pathNodes = new ArrayList<Node>();
@@ -192,26 +206,29 @@ public class Graph {
                     pathNodes.add(0, new Node(pathNode));
                     pathNode = parent.get(pathNode);
                 }
-                if (!pathNodes.get(0).label.equals(src.label)) {
-                    return null;
-                }
+
                 return new Path(pathNodes);
             }
 
             for (int i = 0; i < edges.size(); i++) {
                 GraphEdge edge = edges.get(i);
-                if (edge.from.equals(current) && !parent.containsKey(edge.to))
-                {
+
+                if (edge.from.equals(current) && !visited.contains(edge.to) && !parent.containsKey(edge.to)) {
                     parent.put(edge.to, current);
-                    queue.add(edge.to);
+                    list.add(edge.to);
                 }
             }
         }
+
         return null;
     }
-
 }
-
+      
+enum Algorithm {
+    BFS,
+    DFS
+}
+      
 class Node {
 
     String label;
