@@ -91,6 +91,44 @@ public class Graph {
         edges.add(new GraphEdge(srcLabel, dstLabel));
     }
 
+    public void removeNode(String label) {
+        if (!nodes.contains(label)) {
+            throw new IllegalArgumentException("node doesn't exist");
+        }
+
+        nodes.remove(label);
+        for (int i = edges.size() - 1; i >= 0; i--) {
+            GraphEdge edge = edges.get(i);
+            if (edge.from.equals(label) || edge.to.equals(label)) {
+                edges.remove(i);
+            }
+        }
+    }
+
+    public void removeNodes(String[] label) {
+        for (int i = 0; i < label.length; i++) {
+            if (!nodes.contains(label[i])) {
+                throw new IllegalArgumentException("node doesn't exist");
+            }
+        }
+
+        for (int i = 0; i < label.length; i++) {
+            removeNode(label[i]);
+        }
+    }
+
+    public void removeEdge(String srcLabel, String dstLabel) {
+        for (int i = 0; i < edges.size(); i++) {
+            GraphEdge edge = edges.get(i);
+            if (edge.from.equals(srcLabel) && edge.to.equals(dstLabel)) {
+                edges.remove(i);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("edge doesn't exist");
+    }
+
     public void outputDOTGraph(String path) {
 
         try {

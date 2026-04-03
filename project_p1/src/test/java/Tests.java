@@ -2,9 +2,8 @@ package test.java;
 
 import main.java.Graph;
 import org.junit.jupiter.api.Test;
-import java.nio.file.Files;
-
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,9 +61,84 @@ public class Tests {
 
         String output;
         String expected;
-        output = Files.readString(Paths.get("yz_test.dot"));
-        expected = Files.readString(Paths.get("yz_expected.txt"));
+        output = readFile("yz_test.dot");
+        expected = readFile("yz_expected.txt");
 
         assertEquals(expected, output);
+    }
+
+    @Test
+    public void removeTest() {
+        Graph graph = new Graph();
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+        graph.addEdge("c", "d");
+        graph.addEdge("d", "e");
+
+        graph.removeEdge("a", "b");
+        graph.removeNode("c");
+        graph.removeNodes(new String[]{"d"});
+
+        assertFalse(graph.nodes.contains("c"));
+        assertFalse(graph.nodes.contains("d"));
+        assertTrue(graph.nodes.contains("a"));
+        assertTrue(graph.nodes.contains("b"));
+        assertTrue(graph.nodes.contains("e"));
+        assertEquals(0, graph.edges.size());
+    }
+
+    @Test
+    public void removeMissing() {
+        Graph graph = new Graph();
+        graph.addNode("a");
+        graph.addNode("b");
+
+        try {
+            graph.removeNode("missing");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            graph.removeNodes(new String[]{"a", "missing"});
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+        assertTrue(graph.nodes.contains("a"));
+        assertTrue(graph.nodes.contains("b"));
+    }
+
+    @Test
+    public void removeEdgeMissing() {
+        Graph graph = new Graph();
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+
+        try {
+            graph.removeEdge("a", "c");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            graph.removeEdge("x", "y");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+        assertEquals(2, graph.edges.size());
+    }
+
+    public String readFile(String path) throws Exception {
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        String text = "";
+        String line = reader.readLine();
+
+        while (line != null) {
+            text = text + line + "\n";
+            line = reader.readLine();
+        }
+
+        reader.close();
+        return text;
     }
 }
