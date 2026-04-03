@@ -1,0 +1,23 @@
+name: Project Continuous integration
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checking out
+        uses: actions/checkout@v4
+
+      - name: set up java env
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '18'
+          cache: maven
+
+      - name: Building and running tests
+        run: mvn -B test
