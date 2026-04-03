@@ -20,4 +20,5 @@ jobs:
           cache: maven
 
       - name: Building and running tests
+        working-directory: project_p1
         run: mvn -B test
