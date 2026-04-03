@@ -1,12 +1,13 @@
 package main.java;
 
 import java.util.ArrayList;
-
-import java.util.HashSet;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 
 public class Graph {
@@ -164,4 +165,85 @@ public class Graph {
         }
     }
 
+    public Path GraphSearch(Node src, Node dst) {
+
+        if (src == null || dst == null) {
+            return null;
+        }
+
+        if (!nodes.contains(src.label) || !nodes.contains(dst.label)) {
+            return null;
+        }
+
+        LinkedList<String> queue = new LinkedList<String>();
+        HashMap<String, String> parent = new HashMap<String, String>();
+
+        queue.add(src.label);
+        parent.put(src.label, null);
+
+        while (!queue.isEmpty()) {
+            String current = queue.remove();
+
+            if (current.equals(dst.label)) {
+                ArrayList<Node> pathNodes = new ArrayList<Node>();
+                String pathNode = dst.label;
+
+                while (pathNode != null) {
+                    pathNodes.add(0, new Node(pathNode));
+                    pathNode = parent.get(pathNode);
+                }
+                if (!pathNodes.get(0).label.equals(src.label)) {
+                    return null;
+                }
+                return new Path(pathNodes);
+            }
+
+            for (int i = 0; i < edges.size(); i++) {
+                GraphEdge edge = edges.get(i);
+                if (edge.from.equals(current) && !parent.containsKey(edge.to))
+                {
+                    parent.put(edge.to, current);
+                    queue.add(edge.to);
+                }
+            }
+        }
+        return null;
+    }
+
+}
+
+class Node {
+
+    String label;
+
+    public Node(String label) {
+        this.label = label;
+    }
+
+    public String toString() {
+        return label;
+    }
+}
+
+class Path {
+
+    ArrayList<Node> nodes;
+
+    public Path(ArrayList<Node> nodes) {
+        this.nodes = nodes;
+    }
+
+    public String toString() {
+        String result = "";
+
+        for (int i = 0; i < nodes.size(); i++) {
+            result = result + nodes.get(i);
+
+            if (i < nodes.size() - 1) {
+                result = result + " -> ";
+            }
+        }
+
+        return result;
+    }
 }
