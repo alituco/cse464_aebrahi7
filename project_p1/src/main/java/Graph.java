@@ -166,7 +166,8 @@ public class Graph {
         }
     }
 
-    public Path GraphSearch(Node src, Node dst) {
+    public Path GraphSearch(Node src, Node dst, Algorithm algo) {
+      
         if (src == null || dst == null) {
             return null;
         }
@@ -175,14 +176,21 @@ public class Graph {
             return null;
         }
 
-        LinkedList<String> stack = new LinkedList<String>();
+        LinkedList<String> list = new LinkedList<String>();
         HashSet<String> visited = new HashSet<String>();
         HashMap<String, String> parent = new HashMap<String, String>();
 
-        stack.push(src.label);
+        list.add(src.label);
+        parent.put(src.label, null);
 
-        while (!stack.isEmpty()) {
-            String current = stack.pop();
+        while (!list.isEmpty()) {
+            String current;
+
+            if (algo == Algorithm.DFS) {
+                current = list.removeLast();
+            } else {
+                current = list.removeFirst();
+            }
 
             if (visited.contains(current)) {
                 continue;
@@ -202,14 +210,12 @@ public class Graph {
                 return new Path(pathNodes);
             }
 
-            for (int i = edges.size() - 1; i >= 0; i--) {
+            for (int i = 0; i < edges.size(); i++) {
                 GraphEdge edge = edges.get(i);
 
-                if (edge.from.equals(current) && !visited.contains(edge.to)) {
-                    if (!parent.containsKey(edge.to)) {
-                        parent.put(edge.to, current);
-                    }
-                    stack.push(edge.to);
+                if (edge.from.equals(current) && !visited.contains(edge.to) && !parent.containsKey(edge.to)) {
+                    parent.put(edge.to, current);
+                    list.add(edge.to);
                 }
             }
         }
@@ -217,7 +223,12 @@ public class Graph {
         return null;
     }
 }
-
+      
+enum Algorithm {
+    BFS,
+    DFS
+}
+      
 class Node {
 
     String label;
