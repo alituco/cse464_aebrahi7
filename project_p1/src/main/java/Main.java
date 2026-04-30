@@ -2,16 +2,18 @@ package main.java;
 
 public class Main {
     public static void main(String[] args) {
-        Graph graph = new Graph();
         GraphIO graphIO = new GraphIO();
+        Graph graph = graphIO.parseGraph("input.dot");
 
-        graph.addEdge("y", "z");
+        for (int i = 0; i < 3; i++) {
+            Path path = null;
 
-        graphIO.outputDOTGraph(graph, "yz_test.dot");
-        graphIO.outputGraphics(graph, "graph.png", "png");
+            while (path == null) {
+                System.out.println("random testing");
+                path = graph.GraphSearch("a", "c", Algorithm.RANDOM_WALK);
+            }
 
-        System.out.println("files created.");
+            System.out.println(path);
+        }
     }
-
-
 }

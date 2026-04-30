@@ -110,6 +110,10 @@ public class Graph {
             return new DfsSearch();
         }
 
+        if (algo == Algorithm.RANDOM_WALK) {
+            return new RandomWalkSearch();
+        }
+
         return new BfsSearch();
     }
 
@@ -124,7 +128,8 @@ public class Graph {
       
 enum Algorithm {
     BFS,
-    DFS
+    DFS,
+    RANDOM_WALK
 }
       
 class Node {
@@ -136,7 +141,7 @@ class Node {
     }
 
     public String toString() {
-        return label;
+        return "Node{" + label + "}";
     }
 }
 
@@ -149,16 +154,6 @@ class Path {
     }
 
     public String toString() {
-        String result = "";
-
-        for (int i = 0; i < nodes.size(); i++) {
-            result = result + nodes.get(i);
-
-            if (i < nodes.size() - 1) {
-                result = result + " -> ";
-            }
-        }
-
-        return result;
+        return "Path{nodes=" + nodes + "}";
     }
 }
