@@ -2,8 +2,6 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 
 public class Graph {
@@ -95,66 +93,11 @@ public class Graph {
     }
 
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
-      
-        if (src == null || dst == null) {
-            return null;
-        }
-
-        if (!nodes.contains(src.label) || !nodes.contains(dst.label)) {
-            return null;
-        }
-
-        LinkedList<String> list = new LinkedList<String>();
-        HashSet<String> visited = new HashSet<String>();
-        HashMap<String, String> parent = new HashMap<String, String>();
-
-        list.add(src.label);
-        parent.put(src.label, null);
-
-        while (!list.isEmpty()) {
-            String current = getNextNode(list, algo);
-
-            if (visited.contains(current)) {
-                continue;
-            }
-
-            visited.add(current);
-
-            if (current.equals(dst.label)) {
-                return buildPath(parent, dst.label);
-            }
-
-            for (int i = 0; i < edges.size(); i++) {
-                GraphEdge edge = edges.get(i);
-
-                if (edge.from.equals(current) && !visited.contains(edge.to) && !parent.containsKey(edge.to)) {
-                    parent.put(edge.to, current);
-                    list.add(edge.to);
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private Path buildPath(HashMap<String, String> parent, String dstLabel) {
-        ArrayList<Node> pathNodes = new ArrayList<Node>();
-        String pathNode = dstLabel;
-
-        while (pathNode != null) {
-            pathNodes.add(0, new Node(pathNode));
-            pathNode = parent.get(pathNode);
-        }
-
-        return new Path(pathNodes);
-    }
-
-    private String getNextNode(LinkedList<String> list, Algorithm algo) {
         if (algo == Algorithm.DFS) {
-            return list.removeLast();
+            return new DfsSearch().search(this, src, dst);
         }
 
-        return list.removeFirst();
+        return new BfsSearch().search(this, src, dst);
     }
 
     private void validateNodesExist(String[] labels) {

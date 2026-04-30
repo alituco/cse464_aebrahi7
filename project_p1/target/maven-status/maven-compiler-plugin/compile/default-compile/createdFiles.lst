@@ -3,5 +3,8 @@ main/java/Node.class
 main/java/GraphIO.class
 main/java/Main.class
 main/java/Algorithm.class
+main/java/BfsSearch.class
 main/java/Graph.class
 main/java/Path.class
+main/java/GraphSearchTemplate.class
+main/java/DfsSearch.class
