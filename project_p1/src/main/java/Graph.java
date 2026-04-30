@@ -1,10 +1,13 @@
 package main.java;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashSet;
 
 
 public class Graph {
+
+    private static final EnumMap<Algorithm, SearchStrategy> SEARCH_STRATEGIES = createSearchStrategies();
 
     public HashSet<String> nodes = new HashSet<String>();
     public ArrayList<GraphEdge> edges = new ArrayList<GraphEdge>();
@@ -93,7 +96,7 @@ public class Graph {
     }
 
     public Path GraphSearch(String src, String dst, Algorithm algo) {
-        GraphSearchContext context = new GraphSearchContext(createSearchStrategy(algo));
+        GraphSearchContext context = new GraphSearchContext(getSearchStrategy(algo));
         return context.search(this, src, dst);
     }
 
@@ -105,16 +108,24 @@ public class Graph {
         return GraphSearch(src.label, dst.label, algo);
     }
 
-    private SearchStrategy createSearchStrategy(Algorithm algo) {
-        if (algo == Algorithm.DFS) {
-            return new DfsSearch();
+    private SearchStrategy getSearchStrategy(Algorithm algo) {
+        SearchStrategy searchStrategy = SEARCH_STRATEGIES.get(algo);
+
+        if (searchStrategy == null) {
+            throw new IllegalArgumentException("unknown algorithm");
         }
 
-        if (algo == Algorithm.RANDOM_WALK) {
-            return new RandomWalkSearch();
-        }
+        return searchStrategy;
+    }
 
-        return new BfsSearch();
+    private static EnumMap<Algorithm, SearchStrategy> createSearchStrategies() {
+        EnumMap<Algorithm, SearchStrategy> searchStrategies = new EnumMap<Algorithm, SearchStrategy>(Algorithm.class);
+
+        searchStrategies.put(Algorithm.BFS, new BfsSearch());
+        searchStrategies.put(Algorithm.DFS, new DfsSearch());
+        searchStrategies.put(Algorithm.RANDOM_WALK, new RandomWalkSearch());
+
+        return searchStrategies;
     }
 
     private void validateNodesExist(String[] labels) {
