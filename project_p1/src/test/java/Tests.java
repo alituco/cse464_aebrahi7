@@ -1,6 +1,7 @@
 package test.java;
 
 import main.java.Graph;
+import main.java.GraphIO;
 import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,8 +15,8 @@ public class Tests {
     @Test
     public void f1test() throws Exception {
 
-        Graph graph= new Graph();
-        graph.parseGraph("input.dot");
+        GraphIO graphIO = new GraphIO();
+        Graph graph = graphIO.parseGraph("input.dot");
 
         String output = graph.toString();
 
@@ -55,9 +56,10 @@ public class Tests {
     public void f4test() throws Exception {
 
         Graph graph = new Graph();
+        GraphIO graphIO = new GraphIO();
         graph.addEdge("y","z");
 
-        graph.outputDOTGraph("yz_test.dot");
+        graphIO.outputDOTGraph(graph, "yz_test.dot");
 
         String output;
         String expected;
