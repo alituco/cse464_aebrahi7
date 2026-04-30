@@ -38,16 +38,26 @@ public class Graph {
     }
 
     public void addEdge(String srcLabel, String dstLabel) {
-
-        for (int i = 0; i < edges.size(); i++) {
-            if (edges.get(i).from.equals(srcLabel) && edges.get(i).to.equals(dstLabel)) {
-                return;
-            }
+        if (hasEdge(srcLabel, dstLabel)) {
+            return;
         }
+
         nodes.add(srcLabel);
         nodes.add(dstLabel);
 
         edges.add(new GraphEdge(srcLabel, dstLabel));
+    }
+
+    private boolean hasEdge(String srcLabel, String dstLabel) {
+        for (int i = 0; i < edges.size(); i++) {
+            GraphEdge edge = edges.get(i);
+
+            if (edge.from.equals(srcLabel) && edge.to.equals(dstLabel)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void removeNode(String label) {
