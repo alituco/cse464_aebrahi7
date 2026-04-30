@@ -1,9 +1,13 @@
 package test.java;
 
 import main.java.Graph;
+import main.java.GraphIO;
+import main.java.Main;
 import org.junit.jupiter.api.Test;
+import java.io.ByteArrayOutputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,8 +18,8 @@ public class Tests {
     @Test
     public void f1test() throws Exception {
 
-        Graph graph= new Graph();
-        graph.parseGraph("input.dot");
+        GraphIO graphIO = new GraphIO();
+        Graph graph = graphIO.parseGraph("input.dot");
 
         String output = graph.toString();
 
@@ -55,9 +59,10 @@ public class Tests {
     public void f4test() throws Exception {
 
         Graph graph = new Graph();
+        GraphIO graphIO = new GraphIO();
         graph.addEdge("y","z");
 
-        graph.outputDOTGraph("yz_test.dot");
+        graphIO.outputDOTGraph(graph, "yz_test.dot");
 
         String output;
         String expected;
@@ -128,6 +133,24 @@ public class Tests {
         assertEquals(2, graph.edges.size());
     }
 
+    @Test
+    public void randomWalkDemoTest() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            System.setOut(new PrintStream(outputStream));
+            Main.main(new String[0]);
+        } finally {
+            System.setOut(originalOut);
+        }
+
+        String output = outputStream.toString();
+
+        assertTrue(output.contains("random testing"));
+        assertEquals(6, countOccurrences(output, "Path{nodes=[Node{a}, Node{b}, Node{c}]}"));
+    }
+
     public String readFile(String path) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(path));
         String text = "";
@@ -140,5 +163,17 @@ public class Tests {
 
         reader.close();
         return text;
+    }
+
+    public int countOccurrences(String text, String value) {
+        int count = 0;
+        int index = 0;
+
+        while ((index = text.indexOf(value, index)) != -1) {
+            count++;
+            index = index + value.length();
+        }
+
+        return count;
     }
 }
