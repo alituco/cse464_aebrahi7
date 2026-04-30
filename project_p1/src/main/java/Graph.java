@@ -92,12 +92,25 @@ public class Graph {
         throw new IllegalArgumentException("edge doesn't exist");
     }
 
+    public Path GraphSearch(String src, String dst, Algorithm algo) {
+        GraphSearchContext context = new GraphSearchContext(createSearchStrategy(algo));
+        return context.search(this, src, dst);
+    }
+
     public Path GraphSearch(Node src, Node dst, Algorithm algo) {
-        if (algo == Algorithm.DFS) {
-            return new DfsSearch().search(this, src, dst);
+        if (src == null || dst == null) {
+            return null;
         }
 
-        return new BfsSearch().search(this, src, dst);
+        return GraphSearch(src.label, dst.label, algo);
+    }
+
+    private SearchStrategy createSearchStrategy(Algorithm algo) {
+        if (algo == Algorithm.DFS) {
+            return new DfsSearch();
+        }
+
+        return new BfsSearch();
     }
 
     private void validateNodesExist(String[] labels) {

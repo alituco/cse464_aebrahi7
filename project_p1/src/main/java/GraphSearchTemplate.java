@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public abstract class GraphSearchTemplate {
+public abstract class GraphSearchTemplate implements SearchStrategy {
 
-    public Path search(Graph graph, Node src, Node dst) {
+    @Override
+    public Path search(Graph graph, String src, String dst) {
         if (src == null || dst == null) {
             return null;
         }
 
-        if (!graph.nodes.contains(src.label) || !graph.nodes.contains(dst.label)) {
+        if (!graph.nodes.contains(src) || !graph.nodes.contains(dst)) {
             return null;
         }
 
@@ -20,8 +21,8 @@ public abstract class GraphSearchTemplate {
         HashSet<String> visited = new HashSet<String>();
         HashMap<String, String> parent = new HashMap<String, String>();
 
-        list.add(src.label);
-        parent.put(src.label, null);
+        list.add(src);
+        parent.put(src, null);
 
         while (!list.isEmpty()) {
             String current = getNextNode(list);
@@ -32,8 +33,8 @@ public abstract class GraphSearchTemplate {
 
             visited.add(current);
 
-            if (current.equals(dst.label)) {
-                return buildPath(parent, dst.label);
+            if (current.equals(dst)) {
+                return buildPath(parent, dst);
             }
 
             for (int i = 0; i < graph.edges.size(); i++) {
