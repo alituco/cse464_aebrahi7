@@ -116,13 +116,7 @@ public class Graph {
         parent.put(src.label, null);
 
         while (!list.isEmpty()) {
-            String current;
-
-            if (algo == Algorithm.DFS) {
-                current = list.removeLast();
-            } else {
-                current = list.removeFirst();
-            }
+            String current = getNextNode(list, algo);
 
             if (visited.contains(current)) {
                 continue;
@@ -157,6 +151,14 @@ public class Graph {
         }
 
         return new Path(pathNodes);
+    }
+
+    private String getNextNode(LinkedList<String> list, Algorithm algo) {
+        if (algo == Algorithm.DFS) {
+            return list.removeLast();
+        }
+
+        return list.removeFirst();
     }
 }
       
