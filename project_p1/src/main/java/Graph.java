@@ -75,11 +75,7 @@ public class Graph {
     }
 
     public void removeNodes(String[] label) {
-        for (int i = 0; i < label.length; i++) {
-            if (!nodes.contains(label[i])) {
-                throw new IllegalArgumentException("node doesn't exist");
-            }
-        }
+        validateNodesExist(label);
 
         for (int i = 0; i < label.length; i++) {
             removeNode(label[i]);
@@ -159,6 +155,14 @@ public class Graph {
         }
 
         return list.removeFirst();
+    }
+
+    private void validateNodesExist(String[] labels) {
+        for (int i = 0; i < labels.length; i++) {
+            if (!nodes.contains(labels[i])) {
+                throw new IllegalArgumentException("node doesn't exist");
+            }
+        }
     }
 }
       
