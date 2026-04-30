@@ -131,15 +131,7 @@ public class Graph {
             visited.add(current);
 
             if (current.equals(dst.label)) {
-                ArrayList<Node> pathNodes = new ArrayList<Node>();
-                String pathNode = dst.label;
-
-                while (pathNode != null) {
-                    pathNodes.add(0, new Node(pathNode));
-                    pathNode = parent.get(pathNode);
-                }
-
-                return new Path(pathNodes);
+                return buildPath(parent, dst.label);
             }
 
             for (int i = 0; i < edges.size(); i++) {
@@ -153,6 +145,18 @@ public class Graph {
         }
 
         return null;
+    }
+
+    private Path buildPath(HashMap<String, String> parent, String dstLabel) {
+        ArrayList<Node> pathNodes = new ArrayList<Node>();
+        String pathNode = dstLabel;
+
+        while (pathNode != null) {
+            pathNodes.add(0, new Node(pathNode));
+            pathNode = parent.get(pathNode);
+        }
+
+        return new Path(pathNodes);
     }
 }
       
